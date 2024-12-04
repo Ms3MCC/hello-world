@@ -43,15 +43,35 @@
 // const canvas =document.querySelector('canvas.threejs')
 // console.log(canvas)
 
-// const renderer = new THREE.WebGLRenderer({canvas})
+// const renderer = new THREE.WebGLRenderer({
+//   canvas:canvas,
+//   antialias:true,
+// });
 
 // const controls = new OrbitControls(camera,canvas)
 
 // renderer.setSize(window.innerWidth,window.innerHeight)
 // controls.enableDamping=true
 // controls.autoRotate=true
+// // controls.autoRotateSpeed=true
+
+// const maxPixelRatio = Math.min(window.devicePixelRatio,2)
+// console.log(window.devicePixelRatio)
+
+// renderer.setPixelRatio(maxPixelRatio)
+
+
+// window.addEventListener('resize',() =>{
+//   console.log("resized")
+
+//   camera.aspect=window.innerWidth/window.innerHeight
+//   camera.updateProjectionMatrix()
+//   renderer.setSize(window.innerWidth,window.innerHeight)
+
+// })
+
 // const renderLoop=()=>{
- 
+
 //   controls.update()
 //   renderer.render(scene,camera)
 //   window.requestAnimationFrame(renderLoop)
@@ -66,7 +86,9 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { NURBSCurve } from 'three/examples/jsm/curves/NURBSCurve.js'; 
 
+console.log(NURBSCurve)
 // Scene 1
 const scene1 = new THREE.Scene();
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
@@ -78,7 +100,16 @@ const camera1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.inner
 camera1.position.z = 5;
 
 const canvas = document.querySelector('canvas.threejs');
-const renderer = new THREE.WebGLRenderer({ canvas });
+
+const renderer = new THREE.WebGLRenderer({
+  canvas:canvas,
+  antialias:true,
+});
+
+const maxPixelRatio = Math.min(window.devicePixelRatio,2)
+console.log(window.devicePixelRatio)
+
+renderer.setPixelRatio(maxPixelRatio)
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 const controls = new OrbitControls(camera1, canvas);
@@ -87,6 +118,16 @@ controls.autoRotate = true;
 
 // Scene 2
 const scene2 = new THREE.Scene();
+
+const curve = new NURBSCurve(
+  3, // Degree of the curve
+  [
+    new THREE.Vector4(-10, 0, 0, 1), // Control points (with w = 1)
+    new THREE.Vector4(0, 10, 0, 1),
+    new THREE.Vector4(10, 10, 0, 1),
+    new THREE.Vector4(10, 0, 0, 1)
+  ]
+);
 
 const box1Geometry = new THREE.BoxGeometry();
 const box1Material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -107,7 +148,7 @@ camera2.position.z = 5;
 const box1BB = new THREE.Box3().setFromObject(box1);
 const box2BB = new THREE.Box3().setFromObject(box2);
 
-const speed = 0.02;
+const speed = 0.002;
 
 // Active scene management
 let activeScene = 1;
@@ -134,8 +175,10 @@ function animate() {
     box2BB.setFromObject(box2);
 
     if (box1BB.intersectsBox(box2BB)) {
-      box1.position.x -= 2*speed;
-      box2.position.x += 2*speed;
+      box1.position.x -= 1*speed;
+      box1.position.x -= 1*speed;
+      box2.position.x += 1*speed;
+      box2.position.x += 1*speed;
     }
 
     renderer.render(scene2, camera2);
@@ -185,5 +228,8 @@ window.addEventListener('keydown', (event) => {
 
 // Start Animation
 animate();
+
+
+
 
 
