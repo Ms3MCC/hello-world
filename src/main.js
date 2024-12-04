@@ -143,16 +143,47 @@ function animate() {
 }
 
 // Scene Switching with Keyboard
+// window.addEventListener('keydown', (event) => {
+//   if (event.key === '1') {
+//     activeScene = 1; // Switch to Scene 1
+//   } else if (event.key === '2') {
+//     activeScene = 2; // Switch to Scene 2
+//   }
+// });
+
+// // Start Animation
+// animate();
+
+
+// Touch event to switch scenes on mobile
+window.addEventListener('touchstart', (event) => {
+  // Get the touch position (e.g., first touch)
+  const touch = event.touches[0];
+  const touchX = touch.pageX;
+
+  // If touch position is on the left half of the screen, switch to Scene 1
+  if (touchX < window.innerWidth / 2) {
+    activeScene = 1;
+    controls1.enabled = true; // Enable controls for Scene 1
+  } else {
+    // If touch is on the right half of the screen, switch to Scene 2
+    activeScene = 2;
+    controls1.enabled = false; // Disable controls for Scene 2
+  }
+});
+
+// Keyboard events to switch scenes
 window.addEventListener('keydown', (event) => {
   if (event.key === '1') {
-    activeScene = 1; // Switch to Scene 1
+    activeScene = 1;
+    controls1.enabled = true; // Enable controls for Scene 1
   } else if (event.key === '2') {
-    activeScene = 2; // Switch to Scene 2
+    activeScene = 2;
+    controls1.enabled = false; // Disable controls for Scene 2
   }
 });
 
 // Start Animation
 animate();
-
 
 
