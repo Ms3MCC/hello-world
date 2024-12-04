@@ -72,7 +72,7 @@
 
 // const renderLoop=()=>{
 
-//   controls.update()
+  // controls.update()
 //   renderer.render(scene,camera)
 //   window.requestAnimationFrame(renderLoop)
 // }
@@ -225,6 +225,16 @@ window.addEventListener('keydown', (event) => {
     controls1.enabled = false; // Disable controls for Scene 2
   }
 });
+
+
+window.addEventListener('resize',() =>{
+  console.log("resized")
+
+  camera.aspect=window.innerWidth/window.innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth,window.innerHeight)
+
+})
 
 // Start Animation
 animate();
