@@ -325,19 +325,44 @@ window.addEventListener('touchstart', (event) => {
   }
 });
 
-// Handle resizing
-window.addEventListener('resize', () => {
-  console.log("resized");
+// // Handle resizing
+// window.addEventListener('resize', () => {
+//   console.log("resized");
 
+//   camera1.aspect = window.innerWidth / window.innerHeight;
+//   camera1.updateProjectionMatrix();
+
+//   camera2.aspect = window.innerWidth / window.innerHeight;
+//   camera2.updateProjectionMatrix();
+
+//   renderer.setSize(window.innerWidth, window.innerHeight);
+//   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// });
+
+window.addEventListener('resize', () => {
+  const isMobile = window.innerWidth < 768;
+
+  // Update camera properties
   camera1.aspect = window.innerWidth / window.innerHeight;
+  camera1.fov = isMobile ? 90 : 75;
+  camera1.position.z = isMobile ? 7 : 5;
   camera1.updateProjectionMatrix();
 
   camera2.aspect = window.innerWidth / window.innerHeight;
+  camera2.fov = isMobile ? 90 : 75;
+  camera2.position.z = isMobile ? 7 : 5;
   camera2.updateProjectionMatrix();
 
+  // Adjust renderer size
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(maxPixelRatio);
+
+  // Adjust object positions
+  const baseOffset = isMobile ? 0.5 : 1;
+  box1.position.set(-baseOffset, 0, 0);
+  box2.position.set(baseOffset, 0, 0);
 });
+
 
 // Main animation loop
 function animate() {
@@ -361,10 +386,10 @@ function animate() {
     box2BB.setFromObject(box2);
 
     if (box1BB.intersectsBox(box2BB)) {
-      box1.position.x -= 1 * speed;
-      box1.position.x -= 1 * speed;
-      box2.position.x += 1 * speed;
-      box2.position.x += 1 * speed;
+      box1.position.x -= 2 * speed;
+      // box1.position.x -= 1 * speed;
+      // box2.position.x += 1 * speed;
+      box2.position.x += 2 * speed;
     }
 
     renderer.render(scene2, camera2);
